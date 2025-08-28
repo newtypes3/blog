@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
 
       - name: setup hugo environment
-        uses: peaceires/actions-hugo@v2
+        uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: "0.149.0"
           extended: true
