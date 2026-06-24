@@ -1,7 +1,7 @@
 baseURL: https://newtypes.cc/
 languageCode: zh_cn
 title: newtypes' blog
-theme: ["PaperMod"]
+theme: ["newtypes"]
 
 enableRobotsTXT: true
 buildDrafts: false
@@ -16,7 +16,7 @@ params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
   title: newtypes' blog
   description: "Just a personal blog for fun."
-  keywords: [Blog, PaperMod]
+  keywords: [Blog, newtypes]
   author: newtypes
   # author: ["Me", "You"] # multiple authors
   # images: ["<link or path of image for opengraph, twitter-cards>"]
