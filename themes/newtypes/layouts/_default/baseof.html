@@ -1,0 +1,27 @@
+{{- /* baseof.html — page shell */ -}}
+<!DOCTYPE html>
+<html lang="{{ site.Language.Lang | default "zh-cn" }}">
+{{- partial "head.html" . -}}
+<body>
+  <div class="page">
+    {{- /* decorative gradient line at top of viewport */ -}}
+    <div class="deco-line-top" aria-hidden="true"></div>
+
+    {{- /* large background watermark */ -}}
+    {{- partial "watermark.html" . -}}
+
+    {{- /* rotated side decoration */ -}}
+    {{- partial "side-deco.html" . -}}
+
+    <div class="container">
+      {{- partial "nav.html" . -}}
+
+      <main>
+        {{- block "main" . }}{{ end -}}
+      </main>
+
+      {{- partial "footer.html" . -}}
+    </div>
+  </div>
+</body>
+</html>

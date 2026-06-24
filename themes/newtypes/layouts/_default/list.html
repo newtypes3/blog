@@ -1,0 +1,62 @@
+{{ define "main" }}
+{{- $p := . -}}
+
+<header class="list-header">
+  <div class="list-kicker">
+    {{- if eq .Kind "taxonomy" -}}// {{ upper .Data.Singular }}
+    {{- else if eq .Kind "term" -}}// CATEGORY
+    {{- else -}}// {{ upper .Section }}
+    {{- end -}}
+  </div>
+  <h1 class="list-title">
+    {{- if eq .Kind "term" -}}{{ upper .Title }}
+    {{- else -}}{{ .Title }}
+    {{- end -}}
+  </h1>
+  {{- with .Description -}}<p class="list-desc">{{ . }}</p>{{- end -}}
+</header>
+
+{{- $pages := .RegularPages -}}
+{{- if eq .Kind "term" -}}
+  {{- /* include both microblog + posts in this category */ -}}
+  {{- $pages = .Pages -}}
+{{- end -}}
+{{- $paginator := .Paginate (sort $pages "Date" "desc") -}}
+
+<div class="feed">
+  {{- range $i, $entry := $paginator.Pages -}}
+    {{- $curr := $entry.Date.Format "2006-01" -}}
+    {{- $needsDivider := eq $i 0 -}}
+    {{- if not $needsDivider -}}
+      {{- $prev := index $paginator.Pages (sub $i 1) -}}
+      {{- if ne $curr ($prev.Date.Format "2006-01") -}}
+        {{- $needsDivider = true -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if $needsDivider -}}
+      {{- partial "feed/date-divider.html" $entry.Date -}}
+    {{- end -}}
+
+    {{- if eq $entry.Section "microblog" -}}
+      {{- partial "feed/short-post.html" $entry -}}
+    {{- else -}}
+      {{- partial "feed/long-card.html" $entry -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if or $paginator.HasPrev $paginator.HasNext -}}
+    <div class="pagination">
+      {{- if $paginator.HasNext -}}
+        <a class="pagination-btn" href="{{ $paginator.Next.URL }}">← 更早</a>
+      {{- else -}}
+        <span class="pagination-btn disabled">← 更早</span>
+      {{- end -}}
+      {{- if $paginator.HasPrev -}}
+        <a class="pagination-btn" href="{{ $paginator.Prev.URL }}">更新 →</a>
+      {{- else -}}
+        <span class="pagination-btn disabled">更新 →</span>
+      {{- end -}}
+    </div>
+  {{- end -}}
+</div>
+{{ end }}

@@ -1,0 +1,59 @@
+{{ define "main" }}
+{{- $p := . -}}
+{{- $tsFormat := site.Params.postHeaderTimestampFormat | default "2006.01.02" -}}
+{{- $cats := $p.Params.categories -}}
+{{- $cat := "" -}}
+{{- if $cats -}}{{ $cat = index $cats 0 }}{{- end -}}
+{{- $catEntry := "" -}}
+{{- if $cat -}}{{ $catEntry = index hugo.Data.categories (lower $cat) }}{{- end -}}
+{{- $catColor := "var(--fg-2)" -}}
+{{- if $catEntry -}}{{- with $catEntry.color -}}{{ $catColor = . }}{{- end -}}{{- end -}}
+
+<a class="post-back" href="{{ "/" | relURL }}">← 返回信息流</a>
+
+<header class="post-header">
+  <div class="post-header-meta">
+    <span class="timestamp">{{ $p.Date.Format $tsFormat }}</span>
+    {{- if $cat -}}
+      <span class="sep">·</span>
+      <a class="category" href="{{ "/categories/" | relURL }}{{ $cat | urlize }}/"
+         style="color: {{ $catColor | safeCSS }};">{{ upper $cat }}</a>
+    {{- end -}}
+    {{- $wordcount := $p.WordCount -}}
+    {{- if and $wordcount (gt $wordcount 0) -}}
+      <span class="sep">·</span>
+      <span class="post-header-wordcount">{{ $wordcount }} 字 · {{ $p.ReadingTime }} 分钟</span>
+    {{- end -}}
+  </div>
+
+  <h1 class="post-title">{{ $p.Title }}</h1>
+  {{- with $p.Params.subtitle -}}
+    <p class="post-subtitle">{{ . }}</p>
+  {{- end -}}
+</header>
+
+<article class="post-body">
+  {{ $p.Content }}
+</article>
+
+{{- if or $p.PrevInSection $p.NextInSection -}}
+  <nav class="post-nav" aria-label="上下篇导航">
+    {{- with $p.NextInSection -}}
+      <a class="post-nav-item" href="{{ .RelPermalink }}">
+        <span class="post-nav-label">← 上一篇</span>
+        <span class="post-nav-title">{{ .Title }}</span>
+      </a>
+    {{- else -}}
+      <span></span>
+    {{- end -}}
+    {{- with $p.PrevInSection -}}
+      <a class="post-nav-item next" href="{{ .RelPermalink }}">
+        <span class="post-nav-label">下一篇 →</span>
+        <span class="post-nav-title">{{ .Title }}</span>
+      </a>
+    {{- else -}}
+      <span></span>
+    {{- end -}}
+  </nav>
+{{- end -}}
+{{ end }}

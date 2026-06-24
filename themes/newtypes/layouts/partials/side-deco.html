@@ -1,0 +1,6 @@
+{{- /* side-deco.html — rotated mono text running down the side */ -}}
+{{- $isPost := and .IsPage (eq .Section "posts") -}}
+{{- $home := site.Params.sideDeco.home | default "────── rebuild ──────" -}}
+{{- $post := site.Params.sideDeco.post | default "────── essays ──────" -}}
+{{- $text := cond $isPost $post $home -}}
+<div class="side-deco{{ if $isPost }} left{{ end }}" aria-hidden="true">{{ $text }}</div>

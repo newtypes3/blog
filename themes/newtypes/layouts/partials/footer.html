@@ -1,0 +1,19 @@
+{{- /* footer.html */ -}}
+{{- $year := now.Year -}}
+{{- $author := site.Params.author | default site.Title -}}
+<footer class="footer">
+  <span class="footer-left">// {{ $author }} · {{ $year }}</span>
+
+  {{- $links := site.Params.social -}}
+  {{- if $links -}}
+    <div class="footer-links">
+      {{- range $links -}}
+        {{- $external := or (strings.HasPrefix .url "http") (eq (.external | default true) true) -}}
+        <a class="footer-link" href="{{ .url }}"
+           {{ if $external }}target="_blank" rel="noopener"{{ end }}>
+          {{ .name }}{{ if $external }} ↗{{ end }}
+        </a>
+      {{- end -}}
+    </div>
+  {{- end -}}
+</footer>

@@ -1,0 +1,30 @@
+{{ define "main" }}
+{{- $p := . -}}
+
+<a class="post-back" href="{{ "/" | relURL }}">← 返回信息流</a>
+
+<div class="feed" style="padding-top: 24px;">
+  {{- partial "feed/short-post.html" $p -}}
+</div>
+
+{{- if or $p.PrevInSection $p.NextInSection -}}
+  <nav class="post-nav" aria-label="上下篇导航">
+    {{- with $p.NextInSection -}}
+      <a class="post-nav-item" href="{{ .RelPermalink }}">
+        <span class="post-nav-label">← 更早</span>
+        <span class="post-nav-title">{{ .Date.Format "2006.01.02" }}</span>
+      </a>
+    {{- else -}}
+      <span></span>
+    {{- end -}}
+    {{- with $p.PrevInSection -}}
+      <a class="post-nav-item next" href="{{ .RelPermalink }}">
+        <span class="post-nav-label">更新 →</span>
+        <span class="post-nav-title">{{ .Date.Format "2006.01.02" }}</span>
+      </a>
+    {{- else -}}
+      <span></span>
+    {{- end -}}
+  </nav>
+{{- end -}}
+{{ end }}

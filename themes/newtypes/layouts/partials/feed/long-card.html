@@ -1,0 +1,24 @@
+{{- /* long-card.html — clickable card for a long-form post in the feed */ -}}
+{{- $p := . -}}
+{{- $tsFormat := site.Params.longTimestampFormat | default "2006.01.02" -}}
+<a class="long-card" href="{{ $p.RelPermalink }}">
+  <div class="long-card-meta">
+    {{- $ts := $p.Date.Format $tsFormat -}}
+    <span class="timestamp">{{ $ts }}</span>
+    {{- $cats := $p.Params.categories -}}
+    {{- $cat := "" -}}
+    {{- if $cats -}}{{ $cat = index $cats 0 }}{{- end -}}
+    {{- if $cat -}}
+      {{- $catEntry := index hugo.Data.categories (lower $cat) -}}
+      {{- $color := "var(--fg-2)" -}}
+      {{- if $catEntry -}}{{- with $catEntry.color -}}{{ $color = . }}{{- end -}}{{- end -}}
+      <span class="category" style="color: {{ $color | safeCSS }};">{{ upper $cat }}</span>
+    {{- end -}}
+  </div>
+  <div class="long-card-title">{{ $p.Title }}</div>
+  {{- $excerpt := $p.Params.excerpt | default $p.Summary -}}
+  {{- with $excerpt -}}
+    <p class="long-card-excerpt">{{ . | plainify }}</p>
+  {{- end -}}
+  <div class="long-card-link">→ 阅读全文</div>
+</a>

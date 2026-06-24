@@ -1,0 +1,25 @@
+{{- /* head.html */ -}}
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description | default "newtypes 的博客" }}{{ end }}">
+
+<title>
+{{- if .IsHome -}}
+  {{ site.Title }}
+{{- else -}}
+  {{ .Title }} — {{ site.Title }}
+{{- end -}}
+</title>
+
+{{- /* css pipeline: bundle main.css via Hugo's asset pipeline so cache busting just works */ -}}
+{{- with resources.Get "css/main.css" }}
+  {{- $css := . | minify | fingerprint -}}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{- end }}
+
+{{- /* feeds (Hugo auto-generates rss.xml) */ -}}
+{{ range .AlternativeOutputFormats -}}
+  <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink | safeURL }}" title="{{ site.Title }}">
+{{ end -}}
+</head>

@@ -1,0 +1,41 @@
+{{- /* nav.html — wordmark + main menu
+
+The wordmark "newtypes" is rendered with a single accent character.
+Configure which character is colored via site.Params.wordmark.split (defaults to "new" / "t" / "ypes").
+Menu items come from site.Menus.main; fallback to home + posts if nothing configured.
+*/ -}}
+
+<header class="nav">
+  {{- $left := site.Params.wordmark.left   | default "new" -}}
+  {{- $accent := site.Params.wordmark.accent | default "t"   -}}
+  {{- $right := site.Params.wordmark.right  | default "ypes" -}}
+  <a href="{{ "/" | relURL }}" class="wordmark" aria-label="{{ site.Title }} — 首页">
+    <span>{{ $left }}</span><span class="accent">{{ $accent }}</span><span>{{ $right }}</span>
+  </a>
+
+  <nav class="nav-links" aria-label="主导航">
+    {{- $main := index site.Menus "main" -}}
+    {{- if $main -}}
+      {{- range $main }}
+        {{- $external := or (strings.HasPrefix .URL "http") (eq (.Params.external | default false) true) -}}
+        {{- $itemURL := .URL -}}
+        {{- $current := $.RelPermalink -}}
+        {{- $active := false -}}
+        {{- if eq $itemURL "/" -}}
+          {{- $active = $.IsHome -}}
+        {{- else -}}
+          {{- $active = or (eq $current $itemURL) (and (ne $current "/") (strings.HasPrefix $current $itemURL)) -}}
+        {{- end -}}
+        <a class="nav-link{{ if $external }} external{{ end }}{{ if $active }} active{{ end }}"
+           href="{{ .URL | relURL }}"
+           {{ if $external }}target="_blank" rel="noopener"{{ end }}>
+          {{ .Name }}{{ if $external }} ↗{{ end }}
+        </a>
+      {{- end -}}
+    {{- else -}}
+      {{- /* fallback default menu */ -}}
+      <a class="nav-link{{ if .IsHome }} active{{ end }}" href="{{ "/" | relURL }}">首页</a>
+      <a class="nav-link" href="{{ "/posts/" | relURL }}">文章</a>
+    {{- end -}}
+  </nav>
+</header>

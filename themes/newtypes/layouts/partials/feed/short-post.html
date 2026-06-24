@@ -1,0 +1,30 @@
+{{- /* short-post.html — inline microblog entry
+
+The body is rendered as full markdown content (Content), since shorts are 1–3 sentences.
+Title is optional — if present we show it above the body.
+The whole entry links to its own permalink only if site.Params.linkShortPermalinks = true.
+*/ -}}
+{{- $p := . -}}
+{{- $shortTsFormat := site.Params.shortTimestampFormat | default "2006.01.02 · 15:04" -}}
+{{- $tsLong := site.Params.timestampFormat | default "2006.01.02 · 15:04" -}}
+<article class="short-post">
+  <div class="short-post-meta">
+    {{- /* use short timestamp format (includes hh:mm) */ -}}
+    {{- $ts := $p.Date.Format $shortTsFormat -}}
+    {{- $cats := $p.Params.categories -}}
+    {{- $cat := "" -}}
+    {{- if $cats -}}{{ $cat = index $cats 0 }}{{- end -}}
+    <a class="timestamp" href="{{ $p.RelPermalink }}" style="border-bottom:none;color:var(--fg-3);">{{ $ts }}</a>
+    {{- if $cat -}}
+      {{- $catEntry := index hugo.Data.categories (lower $cat) -}}
+      {{- $color := "var(--fg-2)" -}}
+      {{- if $catEntry -}}{{- with $catEntry.color -}}{{ $color = . }}{{- end -}}{{- end -}}
+      <a class="category" href="{{ "/categories/" | relURL }}{{ $cat | urlize }}/"
+         style="color: {{ $color | safeCSS }};">{{ upper $cat }}</a>
+    {{- end -}}
+  </div>
+  {{- with $p.Title -}}
+    <h2 style="font:600 16px/1.4 var(--font-sans);color:var(--fg-0);margin-bottom:6px;">{{ . }}</h2>
+  {{- end -}}
+  <div class="short-post-body">{{ $p.Content }}</div>
+</article>

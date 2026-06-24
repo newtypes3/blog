@@ -1,0 +1,16 @@
+name = "newtypes"
+license = "MIT"
+licenselink = ""
+description = "newtypes 的博客 — 一个仿 MSN / Telegram 信息流的暗色个人博客主题，以排印和线条作为主要装饰语言。"
+homepage = ""
+tags = ["dark", "minimal", "blog", "personal", "chinese", "microblog"]
+features = ["microblog feed", "long-form posts", "taxonomies", "dark mode"]
+min_version = "0.128.0"
+
+[author]
+  name = "newtypes"
+
+[original]
+  name = ""
+  homepage = ""
+  repo = ""

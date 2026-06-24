@@ -1,0 +1,55 @@
+{{ define "main" }}
+{{- $intro := site.Params.feedIntro | default (dict "label" "// 信息流" "desc" "碎片、长文、链接 —— 按时间排列的思维断面。") -}}
+
+<section class="feed-intro">
+  <span class="feed-intro-label">{{ $intro.label }}</span>
+  <p class="feed-intro-desc">{{ $intro.desc }}</p>
+</section>
+
+{{- /* combine microblog (short) + posts (long) sections, sorted by date desc */ -}}
+{{- $micro := where site.RegularPages "Section" "microblog" -}}
+{{- $essays := where site.RegularPages "Section" "posts" -}}
+{{- $all := sort (union $micro $essays) "Date" "desc" -}}
+
+{{- $paginator := .Paginate $all -}}
+
+<div class="feed">
+  {{- range $i, $p := $paginator.Pages -}}
+    {{- /* date divider when year+month changes from previous item */ -}}
+    {{- $curr := $p.Date.Format "2006-01" -}}
+    {{- $needsDivider := eq $i 0 -}}
+    {{- if not $needsDivider -}}
+      {{- $prev := index $paginator.Pages (sub $i 1) -}}
+      {{- if ne $curr ($prev.Date.Format "2006-01") -}}
+        {{- $needsDivider = true -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if $needsDivider -}}
+      {{- partial "feed/date-divider.html" $p.Date -}}
+    {{- end -}}
+
+    {{- if eq $p.Section "microblog" -}}
+      {{- partial "feed/short-post.html" $p -}}
+    {{- else -}}
+      {{- partial "feed/long-card.html" $p -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if or $paginator.HasPrev $paginator.HasNext -}}
+    <div class="pagination">
+      {{- /* "← 更早" = older = next page in pagination (older items live further down) */ -}}
+      {{- if $paginator.HasNext -}}
+        <a class="pagination-btn" href="{{ $paginator.Next.URL }}">← 更早</a>
+      {{- else -}}
+        <span class="pagination-btn disabled">← 更早</span>
+      {{- end -}}
+
+      {{- if $paginator.HasPrev -}}
+        <a class="pagination-btn" href="{{ $paginator.Prev.URL }}">更新 →</a>
+      {{- else -}}
+        <span class="pagination-btn disabled">更新 →</span>
+      {{- end -}}
+    </div>
+  {{- end -}}
+</div>
+{{ end }}
