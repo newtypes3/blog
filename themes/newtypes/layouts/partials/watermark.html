@@ -1,6 +1,6 @@
 {{- /* watermark.html — large rotated background text */ -}}
 {{- $isPost := and .IsPage (eq .Section "posts") -}}
-{{- $home := site.Params.watermark.home | default "废墟花园" -}}
-{{- $post := site.Params.watermark.post | default "赛博花园" -}}
+{{- $home := site.Params.watermark.home | default site.Title -}}
+{{- $post := site.Params.watermark.post | default site.Title -}}
 {{- $text := cond $isPost $post $home -}}
 <div class="watermark{{ if $isPost }} post{{ end }}" aria-hidden="true">{{ $text }}</div>

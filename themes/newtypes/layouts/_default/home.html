@@ -1,11 +1,4 @@
 {{ define "main" }}
-{{- $intro := site.Params.feedIntro | default (dict "label" "// 信息流" "desc" "碎片、长文、链接 —— 按时间排列的思维断面。") -}}
-
-<section class="feed-intro">
-  <span class="feed-intro-label">{{ $intro.label }}</span>
-  <p class="feed-intro-desc">{{ $intro.desc }}</p>
-</section>
-
 {{- /* combine microblog (short) + posts (long) sections, sorted by date desc */ -}}
 {{- $micro := where site.RegularPages "Section" "microblog" -}}
 {{- $essays := where site.RegularPages "Section" "posts" -}}

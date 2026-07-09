@@ -2,11 +2,10 @@
 
 The body is rendered as full markdown content (Content), since shorts are 1–3 sentences.
 Title is optional — if present we show it above the body.
-The whole entry links to its own permalink only if site.Params.linkShortPermalinks = true.
+The timestamp links to the post's own permalink.
 */ -}}
 {{- $p := . -}}
 {{- $shortTsFormat := site.Params.shortTimestampFormat | default "2006.01.02 · 15:04" -}}
-{{- $tsLong := site.Params.timestampFormat | default "2006.01.02 · 15:04" -}}
 <article class="short-post">
   <div class="short-post-meta">
     {{- /* use short timestamp format (includes hh:mm) */ -}}

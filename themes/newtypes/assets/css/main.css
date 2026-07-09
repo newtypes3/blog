@@ -14,11 +14,11 @@
   --bg-3:    #262626;
   --bg-4:    #333333;
 
-  /* Foregrounds */
+  /* Foregrounds — fg-2/fg-3 lifted to meet WCAG AA (4.5:1) on bg-0/bg-1 */
   --fg-0: #E8E3DA;
   --fg-1: #B0AA9E;
-  --fg-2: #7A756C;
-  --fg-3: #4A4640;
+  --fg-2: #948D80;
+  --fg-3: #837D72;
 
   /* Accents */
   --accent-lime:       #BEFF00;
@@ -284,7 +284,6 @@ hr.dashed { background: none; border-top: 1px dashed var(--border-strong); }
   align-items: center;
   justify-content: space-between;
   padding: var(--space-5) 0;
-  border-bottom: 1px solid var(--border-default);
   flex-wrap: wrap;
   gap: var(--space-4);
 }
@@ -298,7 +297,8 @@ hr.dashed { background: none; border-top: 1px dashed var(--border-strong); }
   letter-spacing: 0.05em;
   border-bottom: none;
 }
-.wordmark:hover { color: var(--fg-0); border-bottom-color: transparent; }
+.wordmark:hover,
+.wordmark:visited { color: var(--fg-0); border-bottom-color: transparent; }
 .wordmark .accent { color: var(--accent-lime); }
 
 .nav-links {
@@ -313,6 +313,8 @@ hr.dashed { background: none; border-top: 1px dashed var(--border-strong); }
   color: var(--fg-2);
   border-bottom: none;
 }
+/* keep inactive links gray even after they've been visited (beats global a:visited) */
+.nav-link:visited { color: var(--fg-2); }
 .nav-link:hover { color: var(--fg-0); border-bottom-color: transparent; }
 .nav-link.active { color: var(--fg-0); }
 .nav-link.external { color: var(--accent-cyan); }
@@ -347,25 +349,7 @@ hr.dashed { background: none; border-top: 1px dashed var(--border-strong); }
    FEED — homepage
    ═══════════════════════════════════════════════ */
 
-.feed-intro {
-  padding: 40px 0 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.feed-intro-label {
-  font: 500 10px/1 var(--font-mono);
-  color: var(--fg-3);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-.feed-intro-desc {
-  font: 400 14px/1.6 var(--font-sans);
-  color: var(--fg-2);
-  max-width: 480px;
-}
-
-.feed { padding-bottom: 40px; }
+.feed { padding: 8px 0 40px; }
 
 /* Date divider (year · month) */
 .date-divider {
@@ -376,17 +360,14 @@ hr.dashed { background: none; border-top: 1px dashed var(--border-strong); }
 }
 .date-divider-line { flex: 1; height: 1px; background: var(--border-subtle); }
 .date-divider-text {
-  font: 400 10px/1 var(--font-mono);
+  font: 400 11px/1 var(--font-mono);
   color: var(--fg-3);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
   flex-shrink: 0;
 }
 
 /* Short post (inline) */
 .short-post {
   padding: 20px 0;
-  border-bottom: 1px solid var(--border-default);
 }
 .short-post-meta {
   display: flex;
@@ -407,31 +388,45 @@ hr.dashed { background: none; border-top: 1px dashed var(--border-strong); }
 }
 .category:hover { border-bottom-color: transparent; }
 .short-post-body {
-  font: 400 15px/1.7 var(--font-sans);
+  font: 400 16px/1.7 var(--font-sans);
   color: var(--fg-1);
 }
-.short-post-body p { color: var(--fg-1); font-size: 15px; line-height: 1.7; }
+.short-post-body p { color: var(--fg-1); font-size: 16px; line-height: 1.7; }
 .short-post-body p + p { margin-top: var(--space-3); }
-.short-post-body a { border-bottom: 1px solid var(--fg-3); }
+.short-post-body a,
+.short-post-body a:visited { color: inherit; border-bottom: 1px solid var(--fg-3); }
+.short-post-body a:hover { color: var(--accent-cyan); border-bottom-color: var(--accent-cyan); }
 
-/* Long-form card (in feed) */
+/* Long-form entry (inline in feed — no card frame) */
 .long-card {
   display: block;
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  padding: 18px 20px;
-  background: var(--bg-1);
-  margin: 20px 0;
-  transition: border-color var(--dur-base) var(--ease-default),
-              background var(--dur-base) var(--ease-default);
+  padding: 20px 0;
   color: inherit;
+  border-bottom: none;
 }
-.long-card:hover {
-  border-color: var(--border-strong);
-  background: var(--bg-2);
-  color: inherit;
-  border-bottom-color: var(--border-strong);
+.long-card:hover { color: inherit; border-bottom-color: transparent; }
+.long-card:hover .long-card-title { color: var(--accent-cyan); }
+
+/* Feed rhythm (replaces the removed divider lines):
+   more vertical spacing + a left "[" bracket enclosing each entry. */
+.feed .short-post,
+.feed .long-card {
+  position: relative;
+  padding: 24px 0 24px 26px;
 }
+.feed .short-post::before,
+.feed .long-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 16px;
+  bottom: 16px;
+  width: 9px;
+  border: 2px solid var(--border-strong);
+  border-right: none;
+  transition: border-color var(--dur-base) var(--ease-default);
+}
+.feed .long-card:hover::before { border-color: var(--accent-cyan); }
 .long-card-meta {
   display: flex;
   align-items: baseline;
@@ -465,7 +460,6 @@ hr.dashed { background: none; border-top: 1px dashed var(--border-strong); }
   justify-content: space-between;
   align-items: center;
   padding: 24px 0;
-  border-top: 1px solid var(--border-default);
   gap: var(--space-4);
 }
 .pagination-btn {
@@ -506,7 +500,6 @@ hr.dashed { background: none; border-top: 1px dashed var(--border-strong); }
 .post-header {
   padding-top: 64px;
   padding-bottom: 32px;
-  border-bottom: 1px solid var(--border-default);
   margin-bottom: 40px;
 }
 .post-header-meta {
@@ -588,8 +581,9 @@ hr.dashed { background: none; border-top: 1px dashed var(--border-strong); }
   color: var(--fg-1);
 }
 .post-body pre code { background: none; padding: 0; color: inherit; }
-.post-body a { color: var(--accent-cyan); border-bottom: 1px solid transparent; }
-.post-body a:hover { color: var(--fg-0); border-bottom-color: var(--fg-3); }
+.post-body a,
+.post-body a:visited { color: inherit; border-bottom: 1px solid var(--fg-3); }
+.post-body a:hover { color: var(--accent-cyan); border-bottom-color: var(--accent-cyan); }
 .post-body img { margin: var(--space-6) 0; filter: saturate(0.7); }
 .post-body figure { margin: var(--space-6) 0; }
 .post-body figcaption {
@@ -605,7 +599,6 @@ hr.dashed { background: none; border-top: 1px dashed var(--border-strong); }
   justify-content: space-between;
   align-items: flex-start;
   padding: 24px 0 0;
-  border-top: 1px solid var(--border-default);
   gap: 24px;
 }
 .post-nav-item {
@@ -635,7 +628,7 @@ hr.dashed { background: none; border-top: 1px dashed var(--border-strong); }
    TAXONOMY / LIST
    ═══════════════════════════════════════════════ */
 
-.list-header { padding: 64px 0 24px; border-bottom: 1px solid var(--border-default); margin-bottom: 16px; }
+.list-header { padding: 64px 0 24px; margin-bottom: 16px; }
 .list-kicker {
   font: 500 10px/1 var(--font-mono);
   color: var(--fg-3);
@@ -659,4 +652,15 @@ hr.dashed { background: none; border-top: 1px dashed var(--border-strong); }
   .post-title { font-size: 28px; }
   .post-body p, .post-body li { font-size: 16px; }
   .post-header { padding-top: 40px; }
+}
+
+/* Nudge reading text up slightly on desktop (mobile stays as-is) */
+@media (min-width: 768px) {
+  .short-post-body, .short-post-body p { font-size: 17px; }
+  .long-card-excerpt { font-size: 15px; }
+  .long-card-title   { font-size: 19px; }
+  .feed-intro-desc   { font-size: 15px; }
+  .list-desc         { font-size: 15px; }
+  .post-subtitle     { font-size: 17px; }
+  .post-body p, .post-body li { font-size: 18px; }
 }

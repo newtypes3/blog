@@ -2,19 +2,13 @@
 #
 # Keys are lowercased category names. Hugo merges site-level data/ over theme-level,
 # so users can override or add categories in their own data/categories.toml.
+#
+# Two categories only: shorts (microblog) and essays (long-form posts).
 
-[fragments]
+[shorts]
 color = "var(--accent-lime)"
-label = "FRAGMENTS"
+label = "SHORTS"
 
 [essays]
 color = "var(--fg-2)"
 label = "ESSAYS"
-
-[code]
-color = "var(--fg-2)"
-label = "CODE"
-
-[links]
-color = "var(--accent-cyan)"
-label = "LINKS"

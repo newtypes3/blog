@@ -1,16 +1,12 @@
 {{- /* date-divider.html — context is a time.Time
 
-Renders: ────  2025 · 十二月  ────
-Falls back to numeric "2025 · 12" if site.Params.cnMonths = false.
+Renders: ────  2025 · December  ────
 */ -}}
 {{- $date := . -}}
 {{- $year := $date.Format "2006" -}}
-{{- $monthIdx := int ($date.Format "1") -}}
-{{- $useCn := site.Params.cnMonths | default true -}}
-{{- $cnMonths := slice "一月" "二月" "三月" "四月" "五月" "六月" "七月" "八月" "九月" "十月" "十一月" "十二月" -}}
-{{- $monthLabel := cond $useCn (index $cnMonths (sub $monthIdx 1)) ($date.Format "01") -}}
+{{- $month := $date.Format "January" -}}
 <div class="date-divider" aria-hidden="true">
   <div class="date-divider-line"></div>
-  <span class="date-divider-text">{{ $year }} · {{ $monthLabel }}</span>
+  <span class="date-divider-text">{{ $year }} · {{ $month }}</span>
   <div class="date-divider-line"></div>
 </div>
