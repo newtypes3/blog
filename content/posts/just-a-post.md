@@ -20,5 +20,7 @@ ShowPostNavLinks: true
 ShowWordCount: true
 ShowRssButtonInSectionTermList: true
 UseHugoToc: true
+categories: ["essays"]
+excerpt: "不需要框架，不需要构建工具，只需要 fetch、DOM 和一点对 XML 的耐心。这是我理想中的软件开发方式。"
 ---
 It is just a post for testing.
